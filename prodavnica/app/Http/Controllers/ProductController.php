@@ -40,7 +40,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator=Validator::make($request->all(),[
+            'product_name'=>'required|string|max:255',
+            'description'=>'required|string',
+            'price'=>'required',
+            'manufacturer_id'=>'required'
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+        $product=Product::create([
+            'product_name'=>$request->product_name,
+            'description'=>$request->description,
+            'price'=>$request->price,
+            'manufacturer_id'=>$request->manufacturer_id,
+            'user_id'=>Auth::user()->id,
+        ]);
+        return response()->json(['Produkt je napravljen',
+        new ProductResource($product)]);
+    
     }
 
     /**
@@ -78,7 +96,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validator=Validator::make($request->all(),[
+            'manufacturer_id'=>'required',
+            'product_name'=>'required|string|max:255',
+            'description'=>'required|string',
+            'price'=>'required'
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors());
+        }
+        
+        $product->manufacturer_id = $request->manufacturer_id; 
+        $product->product_name=$request->product_name;
+        $product->description=$request->description;
+        $product->price=$request->price;
+        
+        $product->save();
+        return response()->json(['Proizvod je azuriran',
+        new ProductResource($product)]);
     }
 
     /**
@@ -89,6 +124,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        Product::destroy($product);
+        return response()->json('Product is deleted successfully!');
     }
+      
 }

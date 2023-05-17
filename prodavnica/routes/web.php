@@ -1,7 +1,8 @@
 <?php
-
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController1;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Route::get('/users', [UserController1::class,'index']);
+//Route::get('/users{id}', [UserController1::class,'show']);
+//Route::get('/products', [ProductController::class,'index']);
+
+//Route::get('/categories', [CategoryController::class,'index']);
